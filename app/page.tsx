@@ -3,26 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
 
-/* ───────────── Scroll-reveal hook ───────────── */
-
-function useReveal() {
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-visible");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-}
-
 /* ───────────── Before / After Slider ───────────── */
 
 function BeforeAfterSlider() {
@@ -132,7 +112,7 @@ function Nav() {
   return (
     <nav className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "bg-primary shadow-lg py-2.5" : "bg-gradient-to-b from-black/60 to-transparent py-4"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        <button onClick={() => scrollTo("#")} className="shrink-0">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="shrink-0">
           <Image src="/images/logo.png" alt="Garden of Eden Landscaping" width={180} height={50} className="h-9 sm:h-11 w-auto brightness-0 invert" priority />
         </button>
 
@@ -179,7 +159,7 @@ function Nav() {
 
 function ServiceCard({ title, desc, img }: { title: string; desc: string; img: string }) {
   return (
-    <div className="reveal group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <div className="relative h-48 sm:h-52 overflow-hidden">
         <Image src={img} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width:640px) 100vw,(max-width:1024px) 50vw,25vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
@@ -196,7 +176,7 @@ function ServiceCard({ title, desc, img }: { title: string; desc: string; img: s
 
 function TestimonialCard({ name, text }: { name: string; text: string }) {
   return (
-    <div className="reveal bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-md hover:shadow-lg transition-shadow">
       <div className="flex gap-0.5 mb-4">
         {[1, 2, 3, 4, 5].map((i) => (
           <svg key={i} className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
@@ -222,7 +202,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 /* ═══════════════════════════════════════════════════
-   MAIN PAGE
+   DATA
    ═══════════════════════════════════════════════════ */
 
 const SERVICES = [
@@ -243,9 +223,11 @@ const TESTIMONIALS = [
   { name: "Rachel B., Jackson", text: "After getting quotes from five companies, we went with Garden of Eden — best decision we made. Fair pricing, honest communication, and the results speak for themselves. Five stars all day." },
 ];
 
-export default function Home() {
-  useReveal();
+/* ═══════════════════════════════════════════════════
+   PAGE
+   ═══════════════════════════════════════════════════ */
 
+export default function Home() {
   return (
     <main className="overflow-x-hidden">
       <Nav />
@@ -285,13 +267,11 @@ export default function Home() {
       <section id="gallery" className="py-16 sm:py-24 bg-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-14">
-            <p className="reveal text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">The Proof Is in the Yard</p>
-            <h2 className="reveal text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">See the Difference</h2>
-            <p className="reveal text-text-light text-base sm:text-lg max-w-2xl mx-auto">Drag the slider to reveal the transformation. This is what happens when you let Garden of Eden work their magic.</p>
+            <p className="text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">The Proof Is in the Yard</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">See the Difference</h2>
+            <p className="text-text-light text-base sm:text-lg max-w-2xl mx-auto">Drag the slider to reveal the transformation. This is what happens when you let Garden of Eden work their magic.</p>
           </div>
-          <div className="reveal">
-            <BeforeAfterSlider />
-          </div>
+          <BeforeAfterSlider />
           <p className="text-center text-text-light/60 text-sm mt-5 italic">Drag the handle left and right to compare</p>
         </div>
       </section>
@@ -300,11 +280,11 @@ export default function Home() {
       <section id="services" className="py-16 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-14">
-            <p className="reveal text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">What We Do</p>
-            <h2 className="reveal text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">Our Services</h2>
-            <p className="reveal text-text-light text-base sm:text-lg max-w-2xl mx-auto">From routine maintenance to complete landscape overhauls, we handle every aspect of your outdoor space.</p>
+            <p className="text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">What We Do</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">Our Services</h2>
+            <p className="text-text-light text-base sm:text-lg max-w-2xl mx-auto">From routine maintenance to complete landscape overhauls, we handle every aspect of your outdoor space.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 stagger">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
             {SERVICES.map((s) => <ServiceCard key={s.title} {...s} />)}
           </div>
         </div>
@@ -315,7 +295,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* Text */}
-            <div className="reveal order-2 lg:order-1">
+            <div className="order-2 lg:order-1">
               <p className="text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">Our Story</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-6 leading-tight">
                 Rooted in Lakewood.<br />Growing for 20+ Years.
@@ -334,7 +314,7 @@ export default function Home() {
               </div>
             </div>
             {/* Image */}
-            <div className="reveal relative order-1 lg:order-2">
+            <div className="relative order-1 lg:order-2">
               <div className="rounded-2xl overflow-hidden shadow-2xl">
                 <Image src="/images/team.png" alt="Garden of Eden landscaping team" width={800} height={600} className="object-cover w-full" sizes="(max-width:1024px) 100vw,50vw" />
               </div>
@@ -365,11 +345,11 @@ export default function Home() {
       <section id="testimonials" className="py-16 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-14">
-            <p className="reveal text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">What Our Clients Say</p>
-            <h2 className="reveal text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">5-Star Reviews</h2>
-            <p className="reveal text-text-light text-base sm:text-lg max-w-2xl mx-auto">Don&apos;t just take our word for it — hear from the homeowners who trust us with their properties.</p>
+            <p className="text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-2">What Our Clients Say</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">5-Star Reviews</h2>
+            <p className="text-text-light text-base sm:text-lg max-w-2xl mx-auto">Don&apos;t just take our word for it — hear from the homeowners who trust us with their properties.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 stagger">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
             {TESTIMONIALS.map((t) => <TestimonialCard key={t.name} {...t} />)}
           </div>
         </div>
@@ -381,20 +361,18 @@ export default function Home() {
           <Image src="/images/hero.png" alt="" fill className="object-cover" sizes="100vw" />
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="reveal">
-            <p className="text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-3">Ready to Get Started?</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
-              Transform Your Property<br /><span className="text-accent">Into a Paradise</span>
-            </h2>
-            <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
-              Whether it&apos;s a complete landscape makeover or regular maintenance, we&apos;re ready to bring your vision to life. Free estimates — no obligation.
-            </p>
-            <a href="tel:7323642052" className="inline-flex items-center gap-3 bg-accent hover:bg-accent-light text-primary font-bold px-10 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-lg">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-              (732) 364-2052
-            </a>
-            <p className="text-white/40 text-sm mt-5">Mon–Fri 7 AM – 6 PM &middot; Serving Lakewood, Toms River, Jackson &amp; all of Ocean County</p>
-          </div>
+          <p className="text-accent font-semibold text-xs sm:text-sm uppercase tracking-[0.15em] mb-3">Ready to Get Started?</p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
+            Transform Your Property<br /><span className="text-accent">Into a Paradise</span>
+          </h2>
+          <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+            Whether it&apos;s a complete landscape makeover or regular maintenance, we&apos;re ready to bring your vision to life. Free estimates — no obligation.
+          </p>
+          <a href="tel:7323642052" className="inline-flex items-center gap-3 bg-accent hover:bg-accent-light text-primary font-bold px-10 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-lg">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+            (732) 364-2052
+          </a>
+          <p className="text-white/40 text-sm mt-5">Mon–Fri 7 AM – 6 PM &middot; Serving Lakewood, Toms River, Jackson &amp; all of Ocean County</p>
         </div>
       </section>
 
@@ -409,8 +387,14 @@ export default function Home() {
             <div>
               <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">Quick Links</h4>
               <div className="flex flex-col gap-2">
-                {["Services", "Gallery", "About Us", "Reviews", "Contact"].map((l) => (
-                  <a key={l} href={`#${l.toLowerCase().replace(" us", "").replace(" ", "-")}`} className="text-white/40 hover:text-accent text-sm transition-colors">{l}</a>
+                {[
+                  { href: "#gallery", label: "Gallery" },
+                  { href: "#services", label: "Services" },
+                  { href: "#about", label: "About Us" },
+                  { href: "#testimonials", label: "Reviews" },
+                  { href: "#contact", label: "Contact" },
+                ].map((l) => (
+                  <a key={l.href} href={l.href} className="text-white/40 hover:text-accent text-sm transition-colors">{l.label}</a>
                 ))}
               </div>
             </div>
