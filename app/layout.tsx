@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://garden-of-eden-landscaping-website.vercel.app"),
+  metadataBase: new URL("https://garden-of-eden-landscaping-website.vercel.app/"),
   title: "Garden of Eden Landscaping Inc | Lakewood, NJ",
   description:
     "Professional landscaping services in Lakewood, NJ. Lawn care, hardscaping, garden design, tree service, and more. 5-star rated. Call (732) 364-2052 for a free estimate.",
